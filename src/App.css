@@ -1,38 +1,65 @@
-.App {
-  text-align: center;
+* {
+    box-sizing: border-box;
 }
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.container {
+    font-family: Arial, Helvetica, sans-serif;
+    width: 800px;
+    margin: 30px auto 0;
+    background-color: #f6f6f6;
 }
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.container .addTask {
+    padding: 15px;
+    background-color: #009688;
+    position: relative;
 }
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.container .addTask input {
+    display: inline-block;
+    padding: 10px 15px;
+    border: none;
+    background-color: rgba(255, 255, 255, 0.3);
+    color: #fff;
+    width: calc(100% - 15px);
+    font-size: 20px;
 }
-
-.App-link {
-  color: #61dafb;
+.container .addTask input:focus {
+    outline: none;
 }
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.container .addTask .plus {
+    width: 43px;
+    height: 43px;
+    border: none;
+    background-color: #fff;
+    color: #009688;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: transform 0.3s;
+    line-height: 43px;
+    font-size: 39px;
+    position: absolute;
+    right: 12px;
+    text-align: center;
+}
+.container .addTask .plus:hover {
+    transform: rotate(90deg);
+}
+.container p{
+    color:#f00;
+}
+.container .taskContent {
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+}
+.container .taskContent span {
+    font-size: 15px;
+    color: #777;
+}
+.container .taskContent .editAndDelete{
+    display: flex;
+}
+.container .taskContent .editAndDelete .edit{
+    cursor: pointer;
+}
+.container .taskContent .editAndDelete .delete{
+    cursor: pointer;
 }
