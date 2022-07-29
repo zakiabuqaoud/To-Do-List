@@ -2,7 +2,8 @@
 import './App.css';
 import React from 'react';
 import { FaEdit } from "react-icons/fa";
-import { AiFillDelete } from "react-icons/ai";
+import { AiFillDelete,AiFillCloseCircle } from "react-icons/ai";
+import { GrDocumentUpdate } from "react-icons/gr";
 class App extends React.Component{
 
   constructor(props) {
@@ -18,25 +19,25 @@ class App extends React.Component{
 
      //handle Submit
      handleSubmit = (event)=>{
-      event.preventDefault();
+         event.preventDefault();
          const tasksArray = [...this.state.tasks];
          const allTasksTitle = this.state.tasks.map((element) => element.title);
-
          if(this.state.taskInputValue != ""){
               if (!allTasksTitle.includes(this.state.taskInputValue)) {
                   tasksArray.push({
-                      id: tasksArray.length + 1,
+                      id: tasksArray.length,
                       title: this.state.taskInputValue,
-                      isChecked: false
+                      isChecked: false,
+                      isEditing:false
                   });
-                  console.log("added");
+                  this.setState({tasks:[...tasksArray],taskInputValue: '' });
               }else{
                   this.setState({isRecurring:true});// go to render to print message
               }
          }else{
           this.setState({isEmpty:true});// go to render to print message
       }
-         this.setState({ tasks: tasksArray, taskInputValue: '' });
+
     }
 
     //handle change
@@ -47,28 +48,54 @@ class App extends React.Component{
     //handle delete
     handleDelete(event,id){
         console.log("delete");
-        event.preventDefault();
+        console.log(id);
         const tasksArray = [...this.state.tasks];
         const taskFilterArray = tasksArray.filter((element)=>element.id != id);
         this.setState({tasks:taskFilterArray});
+        console.log(this.state.tasks);
     }
 
 //handleCheck
 handleCheck = (event,idIsChecked)=>{
     console.log("check");
-    event.preventDefault();
     const tasksArray = [...this.state.tasks];
-
-    tasksArray.map((element,id)=>{
-
-        if(idIsChecked == id+1){
-            element.isChecked = !element.isChecked;
-        }
-    });
-
+    tasksArray[idIsChecked].isChecked = !tasksArray[idIsChecked].isChecked;
     this.setState({tasks:tasksArray});
     console.log(this.state.tasks);
 }
+
+    //handle update
+    handleUpdate = (event,index)=> {
+      console.log("update");
+        const tasksArray = [...this.state.tasks];
+        const allTasksTitle = this.state.tasks.map((element) => element.title);
+        if(this.state.taskInputValue != ""){
+            if (!allTasksTitle.includes(this.state.taskInputValue)) {
+                tasksArray[index].title = this.state.taskInputValue;
+                tasksArray[index].isEditing=false;
+                this.setState({tasks:tasksArray,taskInputValue:""});
+            }else{
+                this.setState({isRecurring:true});
+            }
+        }else{
+            this.setState({isEmpty:true});
+        }
+        }
+    //handle edit
+    edit = (event,index)=>{
+        console.log("edit");
+        const tasksArray = [...this.state.tasks];
+        this.setState({taskInputValue:tasksArray[index].title});
+        tasksArray[index].isEditing = true;
+        this.setState({tasks:tasksArray});
+    }
+    //handle close
+    close = (event,index)=>{
+        console.log("close");
+        const tasksArray = [...this.state.tasks];
+        tasksArray[index].isEditing = false;
+        this.setState({tasks:tasksArray});
+    }
 render() {
     return(
         <div className="container">
@@ -80,16 +107,26 @@ render() {
                 {this.state.isEmpty? <p>EMPTY field</p> : <span></span>}
                 {this.state.isRecurring? <p>Recurring field</p> : <span></span>}
             </form>
-            {this.state.tasks.map((element,id) =>
+            {this.state.tasks.map((element,index) =>
              <div className="taskContent">
                  <div>
-                 <input onChange={(event) => this.handleCheck(event,id+1)} type="checkbox"/>
+                 <input onChange={(event) => this.handleCheck(event,index)} type="checkbox"/>
                 <span className="Task">{element.title}</span>
                  </div>
-                 <div className="editAndDelete">
-                     <div className="edit"><FaEdit/></div>
-                     <div onClick={(event) => this.handleDelete(event,id+1)} className="delete"><AiFillDelete/></div>
-                 </div>
+                 {element.isEditing ?
+                     <div className="updateAndClose">
+                        <div  className="update"  onClick={(event) => this.handleUpdate(event, index)}><GrDocumentUpdate/></div>
+                         <div  className="close" onClick={(event)=> this.close(event, index)}><AiFillCloseCircle/></div>
+                     </div>
+                     :
+
+                     <div className="editAndDelete">
+                         <div className="edit" onClick={(event)=>this.edit(event,index)}><FaEdit/>
+                         </div>
+                         <div className="delete" onClick={(event) => this.handleDelete(event, element.id)} >
+                             <AiFillDelete/></div>
+                     </div>
+                 }
             </div>
             )}
         </div>

@@ -54,12 +54,11 @@
     font-size: 15px;
     color: #777;
 }
-.container .taskContent .editAndDelete{
+.container .taskContent .editAndDelete,.updateAndClose{
     display: flex;
 }
-.container .taskContent .editAndDelete .edit{
+.container .taskContent .editAndDelete .edit,.container .taskContent .editAndDelete .delete,.container .taskContent  .update,.container .taskContent  .close{
     cursor: pointer;
+    margin-left: 5px;
 }
-.container .taskContent .editAndDelete .delete{
-    cursor: pointer;
-}
+
