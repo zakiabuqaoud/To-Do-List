@@ -14,6 +14,7 @@ class App extends React.Component{
             taskInputValue:"",
             isEmpty:false,
             isRecurring: false,
+            isInputEdit:false
         };
   }
 
@@ -73,7 +74,7 @@ handleCheck = (event,idIsChecked)=>{
             if (!allTasksTitle.includes(this.state.taskInputValue)) {
                 tasksArray[index].title = this.state.taskInputValue;
                 tasksArray[index].isEditing=false;
-                this.setState({tasks:tasksArray,taskInputValue:""});
+                this.setState({tasks:tasksArray,taskInputValue:"",isInputEdit:false});
             }else{
                 this.setState({isRecurring:true});
             }
@@ -85,7 +86,7 @@ handleCheck = (event,idIsChecked)=>{
     edit = (event,index)=>{
         console.log("edit");
         const tasksArray = [...this.state.tasks];
-        this.setState({taskInputValue:tasksArray[index].title});
+        this.setState({taskInputValue:tasksArray[index].title,isInputEdit:true});
         tasksArray[index].isEditing = true;
         this.setState({tasks:tasksArray});
     }
@@ -94,7 +95,7 @@ handleCheck = (event,idIsChecked)=>{
         console.log("close");
         const tasksArray = [...this.state.tasks];
         tasksArray[index].isEditing = false;
-        this.setState({tasks:tasksArray});
+        this.setState({tasks:tasksArray,isInputEdit:false});
     }
 render() {
     return(
@@ -102,7 +103,9 @@ render() {
             <form onSubmit={(event)=>this.handleSubmit(event)}>
                 <div className="addTask">
                     <input onChange={this.handleChange} name="task" value={this.state.taskInputValue} type="text"/>
-                    <button type="submit" className="plus">+</button>
+                    {this.state.isInputEdit ? <p></p> :
+                        <button type="submit" className="plus">+</button>
+                    }
                 </div>
                 {this.state.isEmpty? <p>EMPTY field</p> : <span></span>}
                 {this.state.isRecurring? <p>Recurring field</p> : <span></span>}
